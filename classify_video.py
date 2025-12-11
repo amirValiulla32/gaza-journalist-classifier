@@ -13,10 +13,10 @@ from pathlib import Path
 import requests
 
 # Configuration
-WHISPER_CPP_PATH = os.getenv("WHISPER_CPP_PATH", "./whisper.cpp/main")
+WHISPER_CPP_PATH = os.getenv("WHISPER_CPP_PATH", "./whisper.cpp/build/bin/whisper-cli")
 WHISPER_MODEL_PATH = os.getenv("WHISPER_MODEL_PATH", "./whisper.cpp/models/ggml-base.en.bin")
 LOCAL_LLM_URL = os.getenv("LOCAL_LLM_URL", "http://localhost:11434/api/generate")
-LOCAL_LLM_MODEL = os.getenv("LOCAL_LLM_MODEL", "deepseek-r1:latest")
+LOCAL_LLM_MODEL = os.getenv("LOCAL_LLM_MODEL", "deepseek-v3.1:671b-cloud")
 
 # Classification categories and tags
 CATEGORIES = [
@@ -68,7 +68,7 @@ def extract_audio(video_path: str, output_path: str) -> bool:
             "-ac", "1",  # Mono
             "-y",  # Overwrite output
             output_path
-        ], check=True, capture_output=True, stderr=subprocess.DEVNULL)
+        ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         print(f"✅ Audio extracted to {output_path}")
         return True
     except subprocess.CalledProcessError as e:
