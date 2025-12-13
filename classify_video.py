@@ -14,7 +14,7 @@ import requests
 
 # Configuration
 WHISPER_CPP_PATH = os.getenv("WHISPER_CPP_PATH", "./whisper.cpp/build/bin/whisper-cli")
-WHISPER_MODEL_PATH = os.getenv("WHISPER_MODEL_PATH", "./whisper.cpp/models/ggml-base.en.bin")
+WHISPER_MODEL_PATH = os.getenv("WHISPER_MODEL_PATH", "./whisper.cpp/models/ggml-base.bin")
 LOCAL_LLM_URL = os.getenv("LOCAL_LLM_URL", "http://localhost:11434/api/generate")
 LOCAL_LLM_MODEL = os.getenv("LOCAL_LLM_MODEL", "deepseek-v3.1:671b-cloud")
 
@@ -79,10 +79,16 @@ def extract_audio(video_path: str, output_path: str) -> bool:
         return False
 
 
-def transcribe_audio(audio_path: str) -> str:
-    """Transcribe audio using whisper.cpp."""
+def transcribe_audio(audio_path: str, language: str = "auto") -> str:
+    """
+    Transcribe audio using whisper.cpp.
+
+    Args:
+        audio_path: Path to audio file
+        language: Language code ('en', 'ar', 'auto' for auto-detect)
+    """
     try:
-        print(f"🎤 Transcribing audio with whisper.cpp...")
+        print(f"🎤 Transcribing audio with whisper.cpp (language: {language})...")
 
         # Check if whisper.cpp exists
         if not os.path.exists(WHISPER_CPP_PATH):
@@ -96,14 +102,21 @@ def transcribe_audio(audio_path: str) -> str:
             print("Download model: cd whisper.cpp && bash ./models/download-ggml-model.sh base.en")
             return ""
 
-        # Run whisper.cpp
-        result = subprocess.run([
+        # Build whisper command
+        cmd = [
             WHISPER_CPP_PATH,
             "-m", WHISPER_MODEL_PATH,
             "-f", audio_path,
             "-nt",  # No timestamps in output
-            "-l", "en"  # English language
-        ], capture_output=True, text=True, check=True)
+        ]
+
+        # Add language parameter
+        if language != "auto":
+            cmd.extend(["-l", language])
+        # If auto, let whisper detect the language
+
+        # Run whisper.cpp
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
 
         transcript = result.stdout.strip()
         print(f"✅ Transcription complete ({len(transcript)} characters)")
@@ -192,8 +205,14 @@ Transcript to classify:
         }
 
 
-def classify_video(video_path: str) -> dict:
-    """Main function to process a video file."""
+def classify_video(video_path: str, language: str = "auto") -> dict:
+    """
+    Main function to process a video file.
+
+    Args:
+        video_path: Path to video file
+        language: Language code ('en', 'ar', 'auto' for auto-detect)
+    """
     video_path = Path(video_path).resolve()
 
     if not video_path.exists():
@@ -214,7 +233,7 @@ def classify_video(video_path: str) -> dict:
             return None
 
         # Step 2: Transcribe
-        transcript = transcribe_audio(temp_audio_path)
+        transcript = transcribe_audio(temp_audio_path, language)
         if not transcript:
             return None
 
@@ -225,6 +244,7 @@ def classify_video(video_path: str) -> dict:
         result = {
             "video_file": str(video_path),
             "video_name": video_path.name,
+            "language": language,
             "transcript": transcript,
             "classification": classification
         }
@@ -240,20 +260,24 @@ def classify_video(video_path: str) -> dict:
 def main():
     """CLI entry point."""
     if len(sys.argv) < 2:
-        print("Usage: python classify_video.py <path_to_video>")
+        print("Usage: python classify_video.py <path_to_video> [language]")
         print("\nExample: python classify_video.py video.mp4")
+        print("         python classify_video.py video.mp4 ar")
+        print("         python classify_video.py video.mp4 auto")
+        print("\nLanguage codes: en (English), ar (Arabic), auto (auto-detect)")
         print("\nSetup requirements:")
         print("1. Install ffmpeg: brew install ffmpeg")
         print("2. Clone whisper.cpp: git clone https://github.com/ggerganov/whisper.cpp")
         print("3. Build whisper.cpp: cd whisper.cpp && make")
-        print("4. Download model: cd whisper.cpp && bash ./models/download-ggml-model.sh base.en")
+        print("4. Download model: cd whisper.cpp && bash ./models/download-ggml-model.sh base")
         print("5. Install Ollama: https://ollama.ai")
-        print("6. Pull DeepSeek: ollama pull deepseek-r1:latest")
+        print("6. Pull DeepSeek: ollama pull deepseek-v3.1:671b-cloud")
         print("7. Start Ollama: ollama serve")
         sys.exit(1)
 
     video_path = sys.argv[1]
-    result = classify_video(video_path)
+    language = sys.argv[2] if len(sys.argv) > 2 else "auto"
+    result = classify_video(video_path, language)
 
     if result:
         print(f"\n{'='*60}")
