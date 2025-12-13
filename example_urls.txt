@@ -1,0 +1,8 @@
+# Gaza Journalist Video URLs
+# Format: One URL per line, lines starting with # are comments
+
+# TIMES OF GAZA - Flooded displacement camps
+https://x.com/Timesofgaza/status/1998648404470313065
+
+# Add more URLs here, one per line
+# https://x.com/journalist/status/123456789

@@ -130,10 +130,22 @@ def transcribe_audio(audio_path: str, language: str = "auto") -> str:
         return ""
 
 
-def classify_content(transcript: str) -> dict:
-    """Classify transcript using local DeepSeek LLM via Ollama."""
+def classify_content(transcript: str, ocr_text: str = None) -> dict:
+    """Classify transcript using local DeepSeek LLM via Ollama.
+
+    Args:
+        transcript: Audio transcription text
+        ocr_text: Optional text extracted from video frames (on-screen text)
+    """
     try:
         print(f"🤖 Classifying content with DeepSeek...")
+
+        # Build enhanced prompt with OCR if available
+        content_to_analyze = f"AUDIO TRANSCRIPT:\n{transcript}"
+
+        if ocr_text and ocr_text.strip():
+            content_to_analyze += f"\n\nON-SCREEN TEXT (from video frames):\n{ocr_text}"
+            print(f"📝 Including OCR text ({len(ocr_text)} characters)")
 
         system_prompt = f"""You are analyzing journalist reports about Gaza to classify them into categories and tags.
 
@@ -143,21 +155,25 @@ CATEGORIES (choose exactly ONE):
 TAGS (choose ALL that apply, can be multiple or none):
 {json.dumps(TAGS, indent=2)}
 
-Analyze the transcript carefully and provide:
+Analyze BOTH the audio transcript AND any on-screen text carefully.
+On-screen text may include: location names, casualty numbers, dates, hospital/school names, journalist names, organization logos.
+
+Provide:
 1. The single most appropriate category
 2. All relevant tags that apply to the content
+3. Use information from BOTH sources to make accurate classification
 
 Respond with valid JSON only in this exact format:
 {{
   "category": "category name here",
   "tags": ["tag1", "tag2"],
   "confidence": "high/medium/low",
-  "reasoning": "brief explanation"
+  "reasoning": "brief explanation mentioning key details from audio and/or on-screen text"
 }}
 
-Transcript to classify:
+Content to classify:
 
-{transcript}"""
+{content_to_analyze}"""
 
         # Call Ollama API
         response = requests.post(
@@ -205,13 +221,14 @@ Transcript to classify:
         }
 
 
-def classify_video(video_path: str, language: str = "auto") -> dict:
+def classify_video(video_path: str, language: str = "auto", use_ocr: bool = False) -> dict:
     """
     Main function to process a video file.
 
     Args:
         video_path: Path to video file
         language: Language code ('en', 'ar', 'auto' for auto-detect)
+        use_ocr: Enable OCR text extraction from video frames (default: False)
     """
     video_path = Path(video_path).resolve()
 
@@ -237,8 +254,25 @@ def classify_video(video_path: str, language: str = "auto") -> dict:
         if not transcript:
             return None
 
-        # Step 3: Classify
-        classification = classify_content(transcript)
+        # Step 3: Extract OCR text (optional)
+        ocr_text = None
+        if use_ocr:
+            try:
+                from extract_text_from_video import extract_text_from_video
+                print(f"\n📸 Extracting on-screen text with OCR...")
+                ocr_result = extract_text_from_video(str(video_path), num_frames=5)
+                if ocr_result and ocr_result.get('combined_text'):
+                    ocr_text = ocr_result['combined_text']
+                    print(f"✅ OCR extracted {len(ocr_text)} characters")
+                else:
+                    print(f"⚠️ No text detected in video frames")
+            except ImportError:
+                print(f"⚠️ OCR not available (install pytesseract and tesseract)")
+            except Exception as e:
+                print(f"⚠️ OCR error: {e}")
+
+        # Step 4: Classify (with OCR if available)
+        classification = classify_content(transcript, ocr_text)
 
         # Compile results
         result = {
@@ -246,6 +280,7 @@ def classify_video(video_path: str, language: str = "auto") -> dict:
             "video_name": video_path.name,
             "language": language,
             "transcript": transcript,
+            "ocr_text": ocr_text if use_ocr else None,
             "classification": classification
         }
 
@@ -260,11 +295,13 @@ def classify_video(video_path: str, language: str = "auto") -> dict:
 def main():
     """CLI entry point."""
     if len(sys.argv) < 2:
-        print("Usage: python classify_video.py <path_to_video> [language]")
-        print("\nExample: python classify_video.py video.mp4")
-        print("         python classify_video.py video.mp4 ar")
-        print("         python classify_video.py video.mp4 auto")
+        print("Usage: python classify_video.py <path_to_video> [language] [--ocr]")
+        print("\nExamples:")
+        print("  python classify_video.py video.mp4")
+        print("  python classify_video.py video.mp4 ar")
+        print("  python classify_video.py video.mp4 auto --ocr")
         print("\nLanguage codes: en (English), ar (Arabic), auto (auto-detect)")
+        print("--ocr: Extract on-screen text for enhanced classification")
         print("\nSetup requirements:")
         print("1. Install ffmpeg: brew install ffmpeg")
         print("2. Clone whisper.cpp: git clone https://github.com/ggerganov/whisper.cpp")
@@ -273,11 +310,23 @@ def main():
         print("5. Install Ollama: https://ollama.ai")
         print("6. Pull DeepSeek: ollama pull deepseek-v3.1:671b-cloud")
         print("7. Start Ollama: ollama serve")
+        print("\nOptional (for OCR):")
+        print("8. Install tesseract: brew install tesseract tesseract-lang")
+        print("9. Install Python packages: pip install pytesseract pillow")
         sys.exit(1)
 
     video_path = sys.argv[1]
-    language = sys.argv[2] if len(sys.argv) > 2 else "auto"
-    result = classify_video(video_path, language)
+    language = "auto"
+    use_ocr = False
+
+    # Parse arguments
+    for arg in sys.argv[2:]:
+        if arg == "--ocr":
+            use_ocr = True
+        elif not arg.startswith("--"):
+            language = arg
+
+    result = classify_video(video_path, language, use_ocr)
 
     if result:
         print(f"\n{'='*60}")
