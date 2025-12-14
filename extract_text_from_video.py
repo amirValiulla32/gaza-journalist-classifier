@@ -20,14 +20,22 @@ except ImportError:
     OCR_AVAILABLE = False
 
 
-def extract_frames(video_path: str, num_frames: int = 5, output_dir: str = None) -> list:
+def extract_frames(
+    video_path: str,
+    num_frames: int = 5,
+    output_dir: str = None,
+    strategy: str = "distributed"
+) -> list:
     """
     Extract frames from video at different timestamps.
 
     Args:
         video_path: Path to video file
-        num_frames: Number of frames to extract (default: 3 - start, middle, end)
+        num_frames: Number of frames to extract (default: 5)
         output_dir: Directory to save frames (default: temp directory)
+        strategy: Sampling strategy:
+            - "distributed": Evenly distribute frames across entire video
+            - "sections": Strategic sampling (divide into start/middle/end sections)
 
     Returns:
         list of frame file paths
@@ -54,17 +62,49 @@ def extract_frames(video_path: str, num_frames: int = 5, output_dir: str = None)
         print(f"⚠️ Could not get video duration: {e}")
         duration = 10.0  # Default fallback
 
-    # Calculate timestamps to extract frames
+    # Calculate timestamps based on strategy
     timestamps = []
-    if num_frames == 1:
-        timestamps = [1.0]  # First second
-    elif num_frames == 2:
-        timestamps = [1.0, duration - 1.0]
-    else:
-        # Distribute frames evenly (start, middle, end)
-        for i in range(num_frames):
-            t = max(1.0, (duration / (num_frames + 1)) * (i + 1))
+
+    if strategy == "sections":
+        # Strategic sampling: divide into start/middle/end sections
+        # E.g., 15 frames = 5 from start + 5 from middle + 5 from end
+        frames_per_section = max(1, num_frames // 3)
+        remaining_frames = num_frames - (frames_per_section * 3)
+
+        # Start section (0-33% of duration)
+        start_section_end = duration * 0.33
+        for i in range(frames_per_section):
+            t = 1.0 + (start_section_end - 1.0) * (i / max(1, frames_per_section - 1))
+            timestamps.append(min(t, start_section_end))
+
+        # Middle section (33-66% of duration)
+        middle_section_start = duration * 0.33
+        middle_section_end = duration * 0.66
+        for i in range(frames_per_section):
+            t = middle_section_start + (middle_section_end - middle_section_start) * (i / max(1, frames_per_section - 1))
+            timestamps.append(t)
+
+        # End section (66-100% of duration)
+        end_section_start = duration * 0.66
+        for i in range(frames_per_section):
+            t = end_section_start + (duration - 1.0 - end_section_start) * (i / max(1, frames_per_section - 1))
             timestamps.append(min(t, duration - 1.0))
+
+        # Add remaining frames to end section (journalist names often appear at end)
+        for i in range(remaining_frames):
+            t = end_section_start + (duration - 1.0 - end_section_start) * ((i + frames_per_section) / max(1, frames_per_section + remaining_frames - 1))
+            timestamps.append(min(t, duration - 1.0))
+
+    else:  # distributed strategy (original behavior)
+        if num_frames == 1:
+            timestamps = [1.0]  # First second
+        elif num_frames == 2:
+            timestamps = [1.0, duration - 1.0]
+        else:
+            # Distribute frames evenly across entire video
+            for i in range(num_frames):
+                t = max(1.0, (duration / (num_frames + 1)) * (i + 1))
+                timestamps.append(min(t, duration - 1.0))
 
     frame_files = []
 
