@@ -1,0 +1,230 @@
+[
+  {
+    "url": "https://www.instagram.com/p/CyGq80kMPc9/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+    "source": "instagram",
+    "error": "Download failed",
+    "human_category": "Destruction of Property",
+    "human_tags": []
+  },
+  {
+    "url": "https://www.instagram.com/reel/DRFP4kbCtNa/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+    "source": "instagram",
+    "video_file": "validation_videos/video_42.mp4",
+    "human_category": "Starvation of Civilian",
+    "human_tags": [
+      "Food"
+    ],
+    "automated_category": "Starvation of Civilian",
+    "automated_tags": [
+      "Food",
+      "Repression"
+    ],
+    "category_match": true,
+    "tag_overlap": 1,
+    "confidence": "high",
+    "transcript_length": 951,
+    "ocr_length": 476,
+    "reasoning": "The journalist is documenting a systematic blockade on food supplies to Gaza, reporting that Israel is preventing adequate and nutritious food from entering and blocking access to agricultural lands. The situation being interpreted is the deliberate creation of a food crisis, with the journalist emphasizing the scarcity of essential items, inflated prices, and the destruction of local food production capabilities, leading to a deteriorating humanitarian situation and starvation."
+  },
+  {
+    "url": "https://www.instagram.com/p/DMlD3rVK3cb/",
+    "source": "instagram",
+    "video_file": "validation_videos/video_156.mp4",
+    "human_category": "Starvation of Civilian",
+    "human_tags": [
+      "Children",
+      "Food",
+      "Torture",
+      "Women"
+    ],
+    "automated_category": "Starvation of Civilian",
+    "automated_tags": [
+      "Food",
+      "Children",
+      "Healthcare workers",
+      "Other"
+    ],
+    "category_match": true,
+    "tag_overlap": 2,
+    "confidence": "high",
+    "transcript_length": 2092,
+    "ocr_length": 420,
+    "reasoning": "The journalist is documenting a severe and escalating humanitarian crisis where starvation is the primary cause of death. The report focuses on the increasing number of daily deaths from hunger (10-15 Palestinians), the failure of aid delivery systems, and the deliberate policies causing the famine. While bombing is mentioned, the central subject being documented is the systematic starvation of the civilian population, including vulnerable groups like children and the elderly."
+  },
+  {
+    "url": "https://www.instagram.com/p/CylC-XsrZxJ/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+    "source": "instagram",
+    "error": "Download failed",
+    "human_category": "Destruction of Property",
+    "human_tags": []
+  },
+  {
+    "url": "https://www.instagram.com/p/DNMDJY0qxZ7/?img_index=1",
+    "source": "instagram",
+    "error": "Download failed",
+    "human_category": "Willful Killing",
+    "human_tags": [
+      "Journalists"
+    ]
+  },
+  {
+    "url": "https://www.instagram.com/p/Cg6vtf4rOW9/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+    "source": "instagram",
+    "error": "Download failed",
+    "human_category": "Destruction of Property",
+    "human_tags": []
+  },
+  {
+    "url": "https://www.instagram.com/reel/CyIPRQTsaWa/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+    "source": "instagram",
+    "video_file": "validation_videos/video_24.mp4",
+    "human_category": "Resilience",
+    "human_tags": [
+      "Children"
+    ],
+    "automated_category": "Inhumane Acts",
+    "automated_tags": [
+      "Other"
+    ],
+    "category_match": false,
+    "tag_overlap": 0,
+    "confidence": "low",
+    "transcript_length": 13,
+    "ocr_length": 0,
+    "reasoning": "The extremely limited content (a brief, untranslated audio fragment and no visual context) prevents a definitive interpretation. The phrase 'هل تحاول؟ نعم' translates to 'Are you trying? Yes,' which could imply a situation of coercion, interrogation, or an individual being forced to attempt something under duress. In the context of journalist reports from Gaza, this fragment suggests the documentation of a potentially degrading or coercive interaction, falling under 'Inhumane Acts' as the most plausible inference for a situation involving pressure or severe treatment not covered by more specific categories like 'Willful Killing' or 'Imprisonment'."
+  },
+  {
+    "url": "https://www.instagram.com/reel/CySWLS1rk1M/?igsh=NTc4MTIwNjQ2YQ==",
+    "source": "instagram",
+    "video_file": "validation_videos/video_68.mp4",
+    "human_category": "Destruction of Property",
+    "human_tags": [
+      "Children",
+      "Torture"
+    ],
+    "automated_category": "Displacement",
+    "automated_tags": [
+      "Hospitals",
+      "Other"
+    ],
+    "category_match": false,
+    "tag_overlap": 0,
+    "confidence": "medium",
+    "transcript_length": 718,
+    "ocr_length": 294,
+    "reasoning": "The journalist is documenting the situation of being forcibly displaced with no safe place to go. The primary evidence is their report of being asked to evacuate areas and having to take refuge in a hospital because 'there is no other place to go.' The transcript emphasizes the impossibility of movement due to destroyed streets and a complete collapse of infrastructure (no electricity, no networks), which are conditions directly resulting from displacement. While destruction is mentioned, the core focus is on the journalist's own experience of being displaced and the lack of safe refuge, making 'Displacement' the most specific primary category."
+  },
+  {
+    "url": "https://www.instagram.com/p/DPLtOHdCkLV/",
+    "source": "instagram",
+    "video_file": "validation_videos/video_117.mp4",
+    "human_category": "Displacement",
+    "human_tags": [
+      "Call to Action"
+    ],
+    "automated_category": "Willful Killing",
+    "automated_tags": [
+      "Children",
+      "Repression",
+      "Other"
+    ],
+    "category_match": false,
+    "tag_overlap": 0,
+    "confidence": "medium",
+    "transcript_length": 2346,
+    "ocr_length": 176,
+    "reasoning": "The journalist is documenting an ongoing situation characterized by the murder of children and the systematic destruction of homes and cities, which he frames as a 'genocide.' The primary focus is on the loss of life and the urgency to stop the killing, with the destruction of property presented as a secondary consequence. The call to action is driven by the immediate need to prevent further casualties, making the documentation of deaths the central theme."
+  },
+  {
+    "url": "https://www.instagram.com/reel/CyTNtC6MmCV/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+    "source": "instagram",
+    "error": "Download failed",
+    "human_category": "Willful Killing",
+    "human_tags": [
+      "desctruction of property"
+    ]
+  },
+  {
+    "url": "https://www.instagram.com/p/CySnxvQAyxc/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+    "source": "instagram",
+    "error": "Download failed",
+    "human_category": "Inhumane Acts",
+    "human_tags": [
+      "Children"
+    ]
+  },
+  {
+    "url": "https://www.instagram.com/p/DMDcuKSK38t/",
+    "source": "instagram",
+    "video_file": "validation_videos/video_164.mp4",
+    "human_category": "Starvation of Civilian",
+    "human_tags": [
+      "Children",
+      "Food",
+      "Water",
+      "Repression"
+    ],
+    "automated_category": "Destruction of Property",
+    "automated_tags": [
+      "Other"
+    ],
+    "category_match": false,
+    "tag_overlap": 0,
+    "confidence": "low",
+    "transcript_length": 885,
+    "ocr_length": 0,
+    "reasoning": "The journalist's narration is heavily focused on the phrase 'to see the house' (لنرى المنزل), repeated obsessively. This suggests the core event being documented is the act of viewing or confronting the destruction of a home. The reporter's repetitive and distressed questioning ('What are you doing?') implies they are witnessing an ongoing or recent act of property destruction and are challenging the perpetrators. While the emotional tone suggests trauma, the primary subject matter appears to be the physical destruction of a dwelling, with no specific mention of casualties, starvation, or displacement that would trigger a higher-priority category."
+  },
+  {
+    "url": "https://www.instagram.com/p/CyVGOF7AOyo/?igsh=NTc4MTIwNjQ2YQ==",
+    "source": "instagram",
+    "error": "Download failed",
+    "human_category": "Inhumane Acts",
+    "human_tags": [
+      "Children",
+      "Hospitals"
+    ]
+  },
+  {
+    "url": "https://www.instagram.com/p/DJ3uJAKs5UQ/",
+    "source": "instagram",
+    "video_file": "validation_videos/video_176.mp4",
+    "human_category": "Starvation of Civilian",
+    "human_tags": [
+      "Food",
+      "Water",
+      "Torture"
+    ],
+    "automated_category": "Starvation of Civilian",
+    "automated_tags": [
+      "Food"
+    ],
+    "category_match": true,
+    "tag_overlap": 1,
+    "confidence": "medium",
+    "transcript_length": 444,
+    "ocr_length": 0,
+    "reasoning": "The journalist is documenting the experience of hunger and food deprivation. The key phrase 'our empty stomachs louder' indicates a primary focus on the physical suffering caused by starvation. While the transcript is largely garbled, the clear reference to empty stomachs points to a situation where civilians are experiencing severe hunger, which is the defining characteristic of the 'Starvation of Civilian' category."
+  },
+  {
+    "url": "https://www.instagram.com/reel/DQ2EvDZCpED/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+    "source": "instagram",
+    "video_file": "validation_videos/video_45.mp4",
+    "human_category": "Displacement",
+    "human_tags": [
+      "Ceasefire Violation",
+      "Water",
+      "Torture"
+    ],
+    "automated_category": "Inhumane Acts",
+    "automated_tags": [
+      "Other"
+    ],
+    "category_match": false,
+    "tag_overlap": 0,
+    "confidence": "low",
+    "transcript_length": 780,
+    "ocr_length": 0,
+    "reasoning": "The audio transcript appears to be corrupted or heavily distorted, consisting of repetitive, nonsensical phrases that suggest possible psychological distress, communication breakdown, or severe dufficiency being experienced by the journalist. The lack of coherent narration and the absence of any clear on-screen text prevents definitive categorization into more specific events like killing or destruction. The primary documented situation inferred is one of severe mental or communicative suffering, which falls under 'Inhumane Acts' as it indicates a state of extreme hardship not covered by the other categories."
+  }
+]
